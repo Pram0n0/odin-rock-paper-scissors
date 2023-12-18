@@ -48,26 +48,38 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-console.log(playRound(playerSelection, computerSelection));
 
-function game() {
-    while (playerScore < 3 && computerScore < 3) {
-        playerSelection = prompt("Rock, Paper, or Scissors!");
+var selections = document.querySelectorAll('button')
+selections.forEach((selection) => {
+    selection.addEventListener('click', () => {
         computerSelection = getComputerChoice();
-
-        const result = playRound(playerSelection, computerSelection);
+        const log = document.querySelector('.log');
+        const result = playRound(selection.id, computerSelection);
+        const log_result = document.createElement('p')
+        log_result.textContent = result
+        log.appendChild(log_result)
+        
 
         if (result === 'win') {
             playerScore++;
         } else if (result === 'loss') {
             computerScore++;
         }
-        console.log(`Player Score: ${playerScore} | Computer Score: ${computerScore}`);
-    }
-
-    if (playerScore === 3) {
-        console.log("Congratulations! You won the game!");
-    } else {
-        console.log("Sorry, you lost the game. Try again!");
-    }
-}
+        const score = document.querySelector('#score')
+        score.innerHTML = `Player Score: ${playerScore} | Computer Score: ${computerScore}`
+        
+        if (playerScore === 3) {
+            console.log("Congratulations! You won the game!");
+            playerScore = 0;
+            computerScore = 0;
+            log.textContent = ""
+            score.innerHTML = `Player Score: ${playerScore} | Computer Score: ${computerScore}`
+        } else if (computerScore === 3) {
+            console.log("Sorry, you lost the game. Try again!");
+            playerScore = 0;
+            computerScore = 0;
+            log.textContent = ""
+            score.innerHTML = `Player Score: ${playerScore} | Computer Score: ${computerScore}`
+        }
+    });
+});
